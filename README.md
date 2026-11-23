@@ -3,7 +3,8 @@
 Code accompanying
 
 > K. Hong, R. Pund, A. Slosar,
-> *Towards field-level likelihood for projected fields: Evolved projected fields from initial projected fields*, JCAP (submitted).
+> *Towards field-level likelihood for projected fields: Evolved projected fields from initial projected fields*
+> https://arxiv.org/abs/2510.14089
 
 The paper asks how much information about the *initial* projected (2D) matter field survives in
 the *evolved* projected field. The mean evolved projected field turns out to be a 2D Lagrangian
@@ -12,7 +13,7 @@ perturbation theory (LPT) evolution of the initial projected field, damped by
 uses this to build a field-level posterior for the initial projected field and samples it with
 Hamiltonian Monte Carlo.
 
-This repository contains everything needed to reproduce the paper except the simulation data.
+This repository contains everything needed to reproduce results in the paper except the simulation data, which are available upon request.
 
 **Data.** The GADGET-4 snapshots (100 simulations plus the projected-modes-only and
 no-projected-modes runs) and the projected 2D maps derived from them are available from the
@@ -55,10 +56,3 @@ python inference/make_paper_figs.py
 - [docs/inference.md](docs/inference.md): the field-level posterior and sampler (Sec. 4)
 - [docs/figures.md](docs/figures.md): figure → script
 
-## Citation
-
-If you use this code, please cite the paper above.
-
-## Contact
-
-Kevin Hong, Rugved Pund, Anže Slosar (Brookhaven National Laboratory).
