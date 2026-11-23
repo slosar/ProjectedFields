@@ -1,0 +1,28 @@
+# -------------------------------------------------------------
+# DO NOT CHANGE
+Universe        = vanilla
+kill_sig        = SIGINT
++Experiment     = "astro"
+GetEnv          = True
+
+# this restricts the jobs to use the the shared pool
+# Do this if your job will exceed 2 hours
+requirements                    = (cpu_experiment == "sdcc")
+notification                    = never
+should_transfer_files           = YES
+when_to_transfer_output         = ON_EXIT_OR_EVICT
+
+# -------------------------------------------------------------
+# Change these for your job..
+
++job_name                       = "gadget-001"
+initialdir                      = /astro/u/khong/projfields/code
+executable                      = /astro/u/khong/projfields/code/run.sh
+arguments                       = -p pf -np 32 -pp 0 -r $(Process) -o 50
+request_cpus                    = 32
+request_memory                  = 1G
+log                             = ../logs/condor_$(Cluster)-$(Process).log
+error                           = ../logs/condor_$(Cluster)-$(Process).err
+output                          = ../logs/condor_$(Cluster)-$(Process).out
+
+Queue 50

@@ -1,0 +1,490 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+\newcommand{\gradq}{\nabla_{\!q}}
+\newcommand{\gradx}{\nabla_{\!x}}
+\newcommand{\lapq}{\nabla_{\!q}^{2}}
+\newcommand{\lapx}{\nabla_{\!x}^{2}}
+\newcommand{\PsiL}{\bm{\Psi}}
+\newcommand{\xv}{\bm{x}}
+\newcommand{\qv}{\bm{q}}
+\newcommand{\kv}{\bm{k}}
+\newcommand{\kone}{\bm{k}_1}
+\newcommand{\ktwo}{\bm{k}_2}
+\newcommand{\delD}{\delta_{\mathrm{D}}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{Second-Order Lagrangian Perturbation Theory in an Einstein--de Sitter Universe}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setup and conventions}
+
+Work in comoving Eulerian coordinates $\xv$ and Lagrangian coordinates
+$\qv$.  The trajectory of a cold dark matter fluid element is written
+\begin{equation}
+  \xv(\qv,t)=\qv+\PsiL(\qv,t),
+\end{equation}
+where $\PsiL$ is the Lagrangian displacement.  The peculiar velocity is
+$\bm{u}=a\dot{\xv}=a\dot{\PsiL}$, with an overdot denoting a derivative
+with respect to cosmic time $t$.
+
+For an Einstein--de Sitter (EdS) universe,
+\begin{equation}
+  \Omega_m=1,\qquad \Omega_\Lambda=0,\qquad
+  a(t)\propto t^{2/3},\qquad
+  4\pi G\bar\rho = \frac{3}{2}H^2 ,
+\end{equation}
+where $H=\dot a/a$.  The comoving equation of motion and Poisson equation are
+\begin{align}
+  \ddot{\xv}+2H\dot{\xv}
+    &= -\frac{1}{a^2}\gradx\Phi,\\
+  \lapx\Phi
+    &= 4\pi G a^2\bar\rho\,\delta
+     = \frac{3}{2}a^2H^2\delta .
+\end{align}
+Thus the displacement acceleration
+\begin{equation}
+  \bm{A}\equiv \ddot{\PsiL}+2H\dot{\PsiL}
+\end{equation}
+satisfies
+\begin{align}
+  \gradx\cdot \bm{A} &= -\frac{3}{2}H^2\delta, \label{eq:euler-div}\\
+  \gradx\times \bm{A} &= \bm{0}. \label{eq:euler-curl}
+\end{align}
+We assume the growing, irrotational solution and expand
+\begin{equation}
+  \PsiL = \PsiL^{(1)}+\PsiL^{(2)}+\cdots .
+\end{equation}
+
+\section{Mass conservation and the Jacobian}
+
+Mass conservation gives
+\begin{equation}
+  \bar\rho\,[1+\delta(\xv,t)]\,\dd^3x
+  = \bar\rho\,\dd^3q,
+  \qquad
+  1+\delta(\xv,t)=\frac{1}{J(\qv,t)},
+\end{equation}
+with
+\begin{equation}
+  J = \det\!\left(\frac{\partial x_i}{\partial q_j}\right)
+    = \det\!\left(\delta_{ij}+\Psi_{i,j}\right),
+  \qquad
+  \Psi_{i,j}\equiv \frac{\partial \Psi_i}{\partial q_j}.
+\end{equation}
+Expanding the determinant in invariants of $\Psi_{i,j}$,
+\begin{align}
+  J &= 1+\mu_1+\mu_2+\mu_3,\\
+  \mu_1 &= \Psi_{i,i},\\
+  \mu_2 &= \frac{1}{2}\left[
+      \left(\Psi_{i,i}\right)^2-\Psi_{i,j}\Psi_{j,i}
+    \right],
+\end{align}
+where $\mu_3=\det(\Psi_{i,j})$ starts at cubic order.  To second order,
+\begin{equation}
+  \delta = \frac{1}{J}-1
+  = -\mu_1-\mu_2+\mu_1^2+\mathcal{O}(\PsiL^3).
+\end{equation}
+Separating perturbative orders,
+\begin{align}
+  \delta^{(1)}
+    &= -\Psi^{(1)}_{i,i}, \label{eq:delta-first}\\
+  \delta^{(2)}
+    &= -\Psi^{(2)}_{i,i}
+       +\frac{1}{2}\left[
+          \left(\Psi^{(1)}_{i,i}\right)^2
+          +\Psi^{(1)}_{i,j}\Psi^{(1)}_{j,i}
+        \right].
+       \label{eq:delta-second}
+\end{align}
+
+\section{First order: the Zel'dovich displacement}
+
+At first order $\gradx=\gradq+\mathcal{O}(\PsiL)$, so
+Eq.~\eqref{eq:euler-div} gives
+\begin{equation}
+  \left(\frac{\dd^2}{\dd t^2}
+       +2H\frac{\dd}{\dd t}
+       -\frac{3}{2}H^2
+  \right)
+  \Psi^{(1)}_{i,i}=0.
+  \label{eq:first-div-eq}
+\end{equation}
+The curl equation implies that the growing first-order displacement is
+longitudinal.  We write
+\begin{equation}
+  \PsiL^{(1)}(\qv,t)=-D_1(t)\gradq\phi^{(1)}(\qv),
+  \qquad
+  \lapq\phi^{(1)}(\qv)=\delta_0(\qv),
+  \label{eq:first-displacement}
+\end{equation}
+so that
+\begin{equation}
+  \delta^{(1)}(\qv,t)=D_1(t)\delta_0(\qv).
+\end{equation}
+The growth factor obeys
+\begin{equation}
+  \ddot D_1+2H\dot D_1-\frac{3}{2}H^2D_1=0.
+  \label{eq:d1-eq}
+\end{equation}
+In EdS the two independent solutions are $D_1\propto a$ and
+$D_1\propto a^{-3/2}$.  Keeping only the growing mode, we choose the
+normalization
+\begin{equation}
+  D_1(t)=a(t).
+\end{equation}
+
+\section{Second-order equation}
+
+To expand Eq.~\eqref{eq:euler-div} to second order, use
+\begin{equation}
+  \frac{\partial}{\partial x_i}
+  =
+  \left(\delta_{ji}-\Psi^{(1)}_{j,i}\right)
+  \frac{\partial}{\partial q_j}
+  +\mathcal{O}(\PsiL^2).
+\end{equation}
+Therefore
+\begin{equation}
+  \gradx\cdot\bm{A}
+  =
+  A^{(1)}_{i,i}
+  +A^{(2)}_{i,i}
+  -\Psi^{(1)}_{j,i}A^{(1)}_{i,j}
+  +\mathcal{O}(\PsiL^3),
+  \label{eq:lhs-second}
+\end{equation}
+where
+\begin{equation}
+  A^{(n)}_i
+  =
+  \ddot\Psi^{(n)}_i+2H\dot\Psi^{(n)}_i .
+\end{equation}
+Using Eq.~\eqref{eq:delta-second}, the second-order part of
+Eq.~\eqref{eq:euler-div} is
+\begin{multline}
+  A^{(2)}_{i,i}-\Psi^{(1)}_{j,i}A^{(1)}_{i,j}
+  =
+  \frac{3}{2}H^2\Psi^{(2)}_{i,i} \\
+  -\frac{3}{4}H^2
+  \left[
+      \left(\Psi^{(1)}_{i,i}\right)^2
+      +\Psi^{(1)}_{i,j}\Psi^{(1)}_{j,i}
+  \right].
+  \label{eq:second-raw}
+\end{multline}
+For the growing first-order solution,
+\begin{equation}
+  A^{(1)}_{i,j}
+  =
+  \left(\ddot D_1+2H\dot D_1\right)
+  \frac{\Psi^{(1)}_{i,j}}{D_1}
+  =
+  \frac{3}{2}H^2\Psi^{(1)}_{i,j},
+\end{equation}
+where Eq.~\eqref{eq:d1-eq} was used.  Substituting this into
+Eq.~\eqref{eq:second-raw} yields
+\begin{equation}
+  \left(
+    \frac{\dd^2}{\dd t^2}
+    +2H\frac{\dd}{\dd t}
+    -\frac{3}{2}H^2
+  \right)
+  \Psi^{(2)}_{i,i}
+  =
+  -\frac{3}{2}H^2\,
+  \mu_2\!\left[\PsiL^{(1)}\right],
+  \label{eq:second-div-eq}
+\end{equation}
+with
+\begin{equation}
+  \mu_2\!\left[\PsiL^{(1)}\right]
+  =
+  \frac{1}{2}
+  \left[
+    \left(\Psi^{(1)}_{i,i}\right)^2
+    -\Psi^{(1)}_{i,j}\Psi^{(1)}_{j,i}
+  \right].
+  \label{eq:mu2-first}
+\end{equation}
+
+For irrotational growing initial conditions, the second-order transverse
+source vanishes.  Hence the fastest-growing second-order displacement is also
+longitudinal:
+\begin{equation}
+  \PsiL^{(2)}(\qv,t)=D_2(t)\gradq\phi^{(2)}(\qv).
+  \label{eq:second-ansatz}
+\end{equation}
+Using Eq.~\eqref{eq:first-displacement},
+\begin{equation}
+  \mu_2\!\left[\PsiL^{(1)}\right]
+  =
+  D_1^2
+  \sum_{i>j}
+  \left[
+    \phi^{(1)}_{,ii}\phi^{(1)}_{,jj}
+    -\left(\phi^{(1)}_{,ij}\right)^2
+  \right].
+\end{equation}
+Define the second-order potential by
+\begin{equation}
+  \lapq\phi^{(2)}
+  =
+  \sum_{i>j}
+  \left[
+    \phi^{(1)}_{,ii}\phi^{(1)}_{,jj}
+    -\left(\phi^{(1)}_{,ij}\right)^2
+  \right].
+  \label{eq:phi2-poisson}
+\end{equation}
+Then Eq.~\eqref{eq:second-div-eq} reduces to the time equation
+\begin{equation}
+  \ddot D_2+2H\dot D_2-\frac{3}{2}H^2D_2
+  =
+  -\frac{3}{2}H^2D_1^2 .
+  \label{eq:d2-eq}
+\end{equation}
+
+\section{EdS growing solution}
+
+In EdS, set $D_1=a$.  Since
+\begin{equation}
+  \ddot a = -\frac{1}{2}H^2a,
+\end{equation}
+one finds
+\begin{equation}
+  \left(
+    \frac{\dd^2}{\dd t^2}
+    +2H\frac{\dd}{\dd t}
+    -\frac{3}{2}H^2
+  \right)a^2
+  =
+  \frac{7}{2}H^2a^2.
+\end{equation}
+The particular growing solution of Eq.~\eqref{eq:d2-eq} is therefore
+\begin{equation}
+  D_2(t)=-\frac{3}{7}D_1^2(t)
+        =-\frac{3}{7}a^2(t).
+  \label{eq:d2-eds}
+\end{equation}
+The homogeneous solutions are the same as at first order and are usually
+discarded when constructing the fastest-growing 2LPT solution.
+
+Combining the first- and second-order pieces, the standard EdS 2LPT map is
+\begin{equation}
+  \boxed{
+  \xv(\qv,t)
+  =
+  \qv
+  -D_1(t)\gradq\phi^{(1)}(\qv)
+  +D_2(t)\gradq\phi^{(2)}(\qv)
+  }
+\end{equation}
+with
+\begin{align}
+  \lapq\phi^{(1)} &= \delta_0,\\
+  \lapq\phi^{(2)}
+  &=
+  \sum_{i>j}
+  \left[
+    \phi^{(1)}_{,ii}\phi^{(1)}_{,jj}
+    -\left(\phi^{(1)}_{,ij}\right)^2
+  \right],\\
+  D_1 &= a,\qquad D_2=-\frac{3}{7}a^2.
+\end{align}
+Equivalently,
+\begin{equation}
+  \PsiL^{(2)}
+  =
+  -\frac{3}{7}a^2\gradq\phi^{(2)}.
+\end{equation}
+
+\section{Fourier-space form}
+
+Use the Fourier convention
+\begin{equation}
+  f(\qv)
+  =
+  \int\frac{\dd^3k}{(2\pi)^3}\,
+  e^{i\kv\cdot\qv}\,\tilde f(\kv).
+\end{equation}
+At a fixed time, absorb the powers of $D_1$ into the linear density
+$\tilde\delta_L(\kv,t)=D_1(t)\tilde\delta_0(\kv)$.  Then
+\begin{align}
+  \tilde\Psi^{(1)}_i(\kv)
+  &=
+  i\,\frac{k_i}{k^2}\tilde\delta_L(\kv),\\
+  \tilde\Psi^{(2)}_i(\kv)
+  &=
+  \frac{i}{2}
+  \int\frac{\dd^3k_1}{(2\pi)^3}
+       \frac{\dd^3k_2}{(2\pi)^3}
+  (2\pi)^3\delD(\kv-\kone-\ktwo)\,
+  L^{(2)}_i(\kone,\ktwo)\,
+  \tilde\delta_L(\kone)\tilde\delta_L(\ktwo),
+\end{align}
+where the EdS second-order Lagrangian kernel is
+\begin{equation}
+  \boxed{
+  \bm{L}^{(2)}(\kone,\ktwo)
+  =
+  \frac{3}{7}\,
+  \frac{\kv}{k^2}
+  \left[1-\mu_{12}^2\right]
+  },
+  \qquad
+  \kv=\kone+\ktwo,\quad
+  \mu_{12}=\frac{\kone\cdot\ktwo}{k_1k_2}.
+\end{equation}
+
+The corresponding second-order Eulerian density kernel obtained from the
+Jacobian is the usual EdS result
+\begin{equation}
+  F_2(\kone,\ktwo)
+  =
+  \frac{5}{7}
+  +\frac{1}{2}\mu_{12}
+    \left(\frac{k_1}{k_2}+\frac{k_2}{k_1}\right)
+  +\frac{2}{7}\mu_{12}^2.
+\end{equation}
+This agreement provides a useful check on the normalization and sign of
+$D_2$.
+
+\section{Planar fields with only \texorpdfstring{$k_z=0$}{kz = 0} modes}
+
+The derivation above does not require statistical isotropy of the initial
+density field.  Consider a three-dimensional EdS universe in which the density
+field is independent of $z$, so that only transverse Fourier modes are present:
+\begin{equation}
+  \tilde\delta(\kv)
+  \propto \delD(k_z).
+\end{equation}
+Equivalently, up to Fourier-convention factors and the sign convention in the
+Dirac delta enforcing translation invariance, the two-point function may be
+written schematically as
+\begin{equation}
+  \left\langle
+    \tilde\delta(\kv)\tilde\delta(\kv')
+  \right\rangle
+  =
+  P_{\mathrm{2D}}(k_\perp)\,
+  \delD(k_z)\,\delD(k'_z)\,
+  \delD^{(2)}(\kv_\perp+\kv'_\perp),
+\end{equation}
+where $\kv_\perp=(k_x,k_y)$ and $k_\perp=|\kv_\perp|$.
+
+Because convolutions of $k_z=0$ modes remain at $k_z=0$, the LPT evolution
+closes on the transverse plane.  The growing displacement has
+\begin{equation}
+  \Psi_z=0,\qquad
+  \PsiL_\perp=\PsiL_\perp(\qv_\perp,t),
+\end{equation}
+and all spatial operators in the displacement potentials may be replaced by
+their transverse versions,
+\begin{equation}
+  \gradq \rightarrow \nabla_{\perp},
+  \qquad
+  \lapq \rightarrow \nabla_{\perp}^{2}.
+\end{equation}
+The EdS time-dependent growth factors are unchanged, since their equations
+come from the background expansion and the three-dimensional Poisson
+normalization:
+\begin{equation}
+  D_1=a,\qquad D_2=-\frac{3}{7}a^2 .
+\end{equation}
+Thus the planar 2LPT map is
+\begin{equation}
+  \boxed{
+  \xv_\perp(\qv_\perp,t)
+  =
+  \qv_\perp
+  -a(t)\nabla_{\perp}\phi^{(1)}(\qv_\perp)
+  -\frac{3}{7}a^2(t)\nabla_{\perp}\phi^{(2)}(\qv_\perp),
+  \qquad
+  z=q_z .
+  }
+\end{equation}
+The potentials obey
+\begin{align}
+  \nabla_{\perp}^{2}\phi^{(1)}
+    &= \delta_0(\qv_\perp),\\
+  \nabla_{\perp}^{2}\phi^{(2)}
+    &=
+    \phi^{(1)}_{,xx}\phi^{(1)}_{,yy}
+    -
+    \left(\phi^{(1)}_{,xy}\right)^2 .
+\end{align}
+This is just the restriction of the three-dimensional 2LPT source
+\begin{equation}
+  \sum_{i>j}
+  \left[
+    \phi^{(1)}_{,ii}\phi^{(1)}_{,jj}
+    -\left(\phi^{(1)}_{,ij}\right)^2
+  \right]
+\end{equation}
+to fields for which all $z$ derivatives vanish.
+
+In Fourier space the kernel is correspondingly restricted to transverse
+vectors:
+\begin{equation}
+  \bm{L}^{(2)}_\perp(\kone,\ktwo)
+  =
+  \frac{3}{7}\,
+  \frac{\kv_\perp}{k_\perp^2}
+  \left[1-\mu_{12,\perp}^2\right],
+  \qquad
+  L_z^{(2)}=0,
+\end{equation}
+with
+\begin{equation}
+  \kv_\perp=\bm{k}_{1\perp}+\bm{k}_{2\perp},
+  \qquad
+  \mu_{12,\perp}
+  =
+  \frac{\bm{k}_{1\perp}\cdot\bm{k}_{2\perp}}
+       {k_{1\perp}k_{2\perp}}.
+\end{equation}
+
+The important caveat is that this applies to a genuinely $z$-independent
+three-dimensional density field.  A generic line-of-sight projection of a
+three-dimensional density field is not an autonomous two-dimensional
+gravitating system and cannot, in general, be evolved by simply replacing the
+three-dimensional Laplacian with a two-dimensional one.  The normalization of
+$P_{\mathrm{2D}}$ also depends on the Fourier and box-depth convention, but
+that affects the statistical amplitude rather than the EdS growth factors.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{Zeldovich1970}
+Ya.~B. Zel'dovich,
+\emph{Gravitational instability: an approximate theory for large density perturbations},
+Astronomy and Astrophysics \textbf{5}, 84 (1970).
+
+\bibitem{Buchert1992}
+T. Buchert,
+\emph{Lagrangian perturbation theory: a key-model for large-scale structure},
+Monthly Notices of the Royal Astronomical Society \textbf{254}, 729 (1992).
+
+\bibitem{Bouchet1995}
+F. R. Bouchet, S. Colombi, E. Hivon, and R. Juszkiewicz,
+\emph{Perturbative Lagrangian approach to gravitational instability},
+Astronomy and Astrophysics \textbf{296}, 575 (1995).
+
+\bibitem{Bernardeau2002}
+F. Bernardeau, S. Colombi, E. Gaztanaga, and R. Scoccimarro,
+\emph{Large-scale structure of the Universe and cosmological perturbation theory},
+Physics Reports \textbf{367}, 1 (2002).
+\end{thebibliography}
+
+\end{document}

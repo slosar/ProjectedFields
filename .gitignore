@@ -1,0 +1,12 @@
+# data are not distributed with the code (available from the authors upon request)
+data/
+*.hdf5
+
+# generated figures
+figures/*.pdf
+figures/*.png
+
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store

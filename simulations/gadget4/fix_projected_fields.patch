@@ -1,0 +1,147 @@
+diff --git a/Template-Config.sh b/Template-Config.sh
+index d37e28a..ad99158 100644
+--- a/Template-Config.sh
++++ b/Template-Config.sh
+@@ -178,7 +178,7 @@ INITIAL_CONDITIONS_CONTAIN_ENTROPY
+ #NGENIC_FIX_MODE_AMPLITUDES                   # when activated, this leaves the mode amplitudes at sqrt(P(k)), instead of sampling from a Rayleigh distribution
+ #NGENIC_MIRROR_PHASES                         # if this is activated, all phases are turned by 180 degrees
+ #NGENIC_TEST                                  # can be used to create ICs, measure the power spectrum, and then stop
+-
++#FIX_PROJECTED_FIELDS                         # fixes the random seed for generating k_z modes to produce the same projected fields
+ 
+ #----------------------------------------Parallelization options
+ 
+diff --git a/documentation/04_config-options.md b/documentation/04_config-options.md
+index 9930c4b..66eaabc 100644
+--- a/documentation/04_config-options.md
++++ b/documentation/04_config-options.md
+@@ -1365,7 +1365,12 @@ and terminates.
+ 
+ -------
+ 
++**FIX_PROJECTED_FIELDS**
+ 
++This option fixes the random seed for generating k_z modes. The seed
++is specified in param.txt as pf_seed.
++
++-------
+ 
+ MPI related settings                                            {#mpi}
+ ====================
+diff --git a/documentation/05_parameterfile.md b/documentation/05_parameterfile.md
+index f68bfdc..cdf0187 100644
+--- a/documentation/05_parameterfile.md
++++ b/documentation/05_parameterfile.md
+@@ -1014,6 +1014,28 @@ object-by-object basis, if desired.
+ 
+ -------
+ 
++**PFSeed**    654321
++
++An integer number that serves as seed for the random number generator
++used to generate the same projected field (in z axis). This will fix
++the seed for k_z modes.
++
++-------
++
++**ZeroModes**   0
++
++If set to 1, the modes except k_z=0 will be nulled. This will only 
++activate if `FIX_PROJECTED_FIELDS` is active. The seed used for
++the k_z=0 mode will be `PFSeed`. 
++
++-------
++
++**ZeroProjected**   0
++
++If set to 1, the k_z=0 modes will be nulled. This will only activate
++if `FIX_PROJECTED_FIELDS` is active. The seed used for the other
++modes will be `Seed`.
++
+ Lightcone output                                     {#lcone}
+ ================
+ 
+diff --git a/src/data/allvars.cc b/src/data/allvars.cc
+index 37123ba..38db29b 100644
+--- a/src/data/allvars.cc
++++ b/src/data/allvars.cc
+@@ -195,6 +195,11 @@ void global_data_all_processes::register_parameters(void)
+   add_param("PowerSpectrumFile", PowerSpectrumFile, PARAM_STRING, PARAM_FIXED);
+   add_param("InputSpectrum_UnitLength_in_cm", &InputSpectrum_UnitLength_in_cm, PARAM_DOUBLE, PARAM_FIXED);
+   add_param("Seed", &NgenicSeed, PARAM_INT, PARAM_FIXED);
++#ifdef FIX_PROJECTED_FIELDS
++  add_param("PFSeed", &PFSeed, PARAM_INT, PARAM_FIXED);
++  add_param("ZeroModes", &ZeroModes, PARAM_INT, PARAM_FIXED);
++  add_param("ZeroProjected", &ZeroProjected, PARAM_INT, PARAM_FIXED);
++#endif
+ #endif
+ 
+ #ifdef CREATE_GRID
+diff --git a/src/data/allvars.h b/src/data/allvars.h
+index c2edb12..cd5a52e 100644
+--- a/src/data/allvars.h
++++ b/src/data/allvars.h
+@@ -345,6 +345,9 @@ struct global_data_all_processes : public parameters
+   char PowerSpectrumFile[MAXLEN_PATH];
+   double InputSpectrum_UnitLength_in_cm;
+   int NgenicSeed;
++  int PFSeed;
++  int ZeroModes;
++  int ZeroProjected;
+ #endif
+ 
+ #ifdef CREATE_GRID
+diff --git a/src/ngenic/ngenic.cc b/src/ngenic/ngenic.cc
+index 3737760..c3fefce 100644
+--- a/src/ngenic/ngenic.cc
++++ b/src/ngenic/ngenic.cc
+@@ -119,6 +119,12 @@ void ngenic::ngenic_displace_particles(void)
+         seedtable[(NGENIC - 1 - j) * NGENIC + (NGENIC - 1 - i)] = 0x7fffffff * gsl_rng_uniform(rnd_generator);
+     }
+ 
++#ifdef FIX_PROJECTED_FIELDS
++  gsl_rng_set(rnd_generator, All.PFSeed);
++  for(int i = 0; i < NGENIC; i++)
++    seedtable[i*NGENIC] = 0x7fffffff * gsl_rng_uniform(rnd_generator);
++#endif
++
+   if(Shmem.Island_NTask != Shmem.World_NTask)
+     {
+       // We actually have multiple shared memory nodes in which we set aside one MPI rank for shared memory communictiona.
+@@ -721,6 +727,13 @@ void ngenic::ngenic_setup_modes_in_kspace(fft_complex *fft_of_grid)
+         z_conj = 0;
+ 
+       gsl_rng_set(rnd_generator_conjugate, seedtable[y_conj * NGENIC + z_conj]);
++//#ifdef FIX_PROJECTED_FIELDS
++//      if(z == 0)
++//      {
++//        gsl_rng_set(rnd_generator, All.PFSeed);
++//        gsl_rng_set(rnd_generator_conjugate, All.PFSeed+NGENIC);
++//      }
++//#endif
+ 
+ #ifndef NGENIC_FIX_MODE_AMPLITUDES
+       double mode_ampl[GRIDX], mode_ampl_conj[GRIDX];
+@@ -771,6 +784,22 @@ void ngenic::ngenic_setup_modes_in_kspace(fft_complex *fft_of_grid)
+             mode_ampl[x] = ampl;
+ 
+             mode_ampl_conj[x] = ampl_conj;
++#endif
++#ifdef FIX_PROJECTED_FIELDS
++            if(All.ZeroModes && z != 0)
++            {
++              mode_phase[x] = 0;
++              mode_phase_conj[x] = 0;
++              mode_ampl[x] = 1;
++              mode_ampl_conj[x] = 1;
++            }
++            if(All.ZeroProjected && z == 0)
++            {
++              mode_phase[x] = 0;
++              mode_phase_conj[x] = 0;
++              mode_ampl[x] = 1;
++              mode_ampl_conj[x] = 1;
++            }
+ #endif
+           }
+ 

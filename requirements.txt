@@ -1,0 +1,12 @@
+# Section 4 (inference/): field-level posterior and HMC sampler
+numpy
+scipy
+h5py
+matplotlib
+torch
+
+# Sections 2-3 (profield/, notebooks/): snapshot loading and projection with nbodykit.
+# nbodykit needs Python <= 3.10 and is most easily installed with conda.
+# nbodykit
+# pyccl
+# dask
